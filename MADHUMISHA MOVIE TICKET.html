@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CineBook - Movie Ticket Booking</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* Navigation */
+
+        header {
+            background: #111;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        /* Hero Section */
+
+        .hero {
+            min-height: 500px;
+
+            background:
+            linear-gradient(
+                rgba(0,0,0,0.70),
+                rgba(0,0,0,0.70)
+            ),
+            url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba");
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            padding: 30px;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: #ffcc00;
+            color: #111;
+            padding: 14px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero-btn:hover {
+            background: #ffaa00;
+        }
+
+        /* Common Section */
+
+        section {
+            padding: 60px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        /* Movies */
+
+        .movie-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .movie-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: 0.3s;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 330px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 20px;
+        }
+
+        .movie-info h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .movie-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            color: #e6a800;
+            font-weight: bold;
+        }
+
+        .book-btn {
+            display: inline-block;
+            background: #111;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .book-btn:hover {
+            background: #ffcc00;
+            color: #111;
+        }
+
+        /* Offers */
+
+        .offers {
+            background: #111;
+            color: white;
+        }
+
+        .offer-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .offer-card {
+            background: #222;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .offer-card h3 {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-size: 23px;
+        }
+
+        .offer-card p {
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        /* Booking */
+
+        .booking {
+            background: #eeeeee;
+        }
+
+        .booking-box {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .booking-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        .confirm-btn {
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            background: #111;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .confirm-btn:hover {
+            background: #ffcc00;
+            color: #111;
+        }
+
+        /* About */
+
+        .about {
+            text-align: center;
+        }
+
+        .about p {
+            max-width: 850px;
+            margin: auto;
+            line-height: 1.8;
+            color: #555;
+            font-size: 17px;
+        }
+
+        /* Contact */
+
+        .contact {
+            background: white;
+            text-align: center;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .contact-container p {
+            margin: 15px 0;
+            color: #555;
+        }
+
+        /* Footer */
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer span {
+            color: #ffcc00;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .movie-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .offer-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .movie-container {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 45px 5%;
+            }
+
+            .booking-box {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navigation -->
+
+<header>
+
+    <div class="logo">
+        CineBook
+    </div>
+
+    <nav>
+
+        <a href="#home">Home</a>
+
+        <a href="#movies">Movies</a>
+
+        <a href="#offers">Offers</a>
+
+        <a href="#booking">Book Tickets</a>
+
+        <a href="#about">About</a>
+
+        <a href="#contact">Contact</a>
+
+    </nav>
+
+</header>
+
+
+<!-- Home -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <h1>
+            Book Your Movie Experience
+        </h1>
+
+        <p>
+            Discover the latest movies, choose your
+            favourite theatre and book your tickets
+            quickly and easily.
+        </p>
+
+        <a href="#movies" class="hero-btn">
+            Explore Movies
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- Movies -->
+
+<section id="movies">
+
+    <h2 class="section-title">
+        Now Showing
+    </h2>
+
+
+    <div class="movie-container">
+
+
+        <div class="movie-card">
+
+            <img
+            src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
+            alt="Action Movie">
+
+            <div class="movie-info">
+
+                <h3>Shadow Warrior</h3>
+
+                <p>
+                    Action | Drama
+                </p>
+
+                <p class="rating">
+                    ★ 4.5 / 5
+                </p>
+
+                <a href="#booking" class="book-btn">
+                    Book Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="movie-card">
+
+            <img
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+            alt="Adventure Movie">
+
+            <div class="movie-info">
+
+                <h3>Lost Adventure</h3>
+
+                <p>
+                    Adventure | Thriller
+                </p>
+
+                <p class="rating">
+                    ★ 4.3 / 5
+                </p>
+
+                <a href="#booking" class="book-btn">
+                    Book Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="movie-card">
+
+            <img
+            src="https://images.unsplash.com/photo-1485846234645-a62644f84728"
+            alt="Romantic Movie">
+
+            <div class="movie-info">
+
+                <h3>Love Story</h3>
+
+                <p>
+                    Romance | Drama
+                </p>
+
+                <p class="rating">
+                    ★ 4.6 / 5
+                </p>
+
+                <a href="#booking" class="book-btn">
+                    Book Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="movie-card">
+
+            <img
+            src="https://images.unsplash.com/photo-1536440136628-849c177e76a1"
+            alt="Sci Fi Movie">
+
+            <div class="movie-info">
+
+                <h3>Future World</h3>
+
+                <p>
+                    Sci Fi | Action
+                </p>
+
+                <p class="rating">
+                    ★ 4.7 / 5
+                </p>
+
+                <a href="#booking" class="book-btn">
+                    Book Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- Offers -->
+
+<section class="offers" id="offers">
+
+    <h2 class="section-title">
+        Special Offers
+    </h2>
+
+
+    <div class="offer-container">
+
+
+        <div class="offer-card">
+
+            <h3>Student Offer</h3>
+
+            <p>
+                Get special ticket discounts
+                for students with valid student ID.
+            </p>
+
+        </div>
+
+
+        <div class="offer-card">
+
+            <h3>Weekend Offer</h3>
+
+            <p>
+                Enjoy exciting weekend deals
+                on selected movie shows.
+            </p>
+
+        </div>
+
+
+        <div class="offer-card">
+
+            <h3>Family Offer</h3>
+
+            <p>
+                Book multiple tickets and enjoy
+                special family booking benefits.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- Booking -->
+
+<section class="booking" id="booking">
+
+    <div class="booking-box">
+
+        <h2>
+            Book Your Tickets
+        </h2>
+
+
+        <form>
+
+
+            <label>
+                Select Movie
+            </label>
+
+            <select>
+
+                <option>
+                    Shadow Warrior
+                </option>
+
+                <option>
+                    Lost Adventure
+                </option>
+
+                <option>
+                    Love Story
+                </option>
+
+                <option>
+                    Future World
+                </option>
+
+            </select>
+
+
+            <label>
+                Select Theatre
+            </label>
+
+            <select>
+
+                <option>
+                    CineBook Cinemas
+                </option>
+
+                <option>
+                    Grand Mall Cinemas
+                </option>
+
+                <option>
+                    PVR Cinemas
+                </option>
+
+                <option>
+                    INOX Cinemas
+                </option>
+
+            </select>
+
+
+            <label>
+                Select Date
+            </label>
+
+            <input
+            type="date">
+
+
+            <label>
+                Select Show Time
+            </label>
+
+            <select>
+
+                <option>
+                    10:00 AM
+                </option>
+
+                <option>
+                    1:30 PM
+                </option>
+
+                <option>
+                    4:30 PM
+                </option>
+
+                <option>
+                    7:30 PM
+                </option>
+
+                <option>
+                    10:00 PM
+                </option>
+
+            </select>
+
+
+            <label>
+                Number of Tickets
+            </label>
+
+            <input
+            type="number"
+            min="1"
+            max="10"
+            placeholder="Enter number of tickets">
+
+
+            <label>
+                Your Name
+            </label>
+
+            <input
+            type="text"
+            placeholder="Enter your name">
+
+
+            <label>
+                Email
+            </label>
+
+            <input
+            type="email"
+            placeholder="Enter your email">
+
+
+            <button
+            type="submit"
+            class="confirm-btn">
+
+                Confirm Booking
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- About -->
+
+<section class="about" id="about">
+
+    <h2 class="section-title">
+        About CineBook
+    </h2>
+
+    <p>
+
+        CineBook is a movie ticket booking website
+        developed using HTML and CSS. The website
+        provides a simple and attractive interface
+        for users to explore movies, view offers,
+        select theatres and book movie tickets.
+        The project focuses on responsive design,
+        easy navigation and a user friendly interface.
+
+    </p>
+
+</section>
+
+
+<!-- Contact -->
+
+<section class="contact" id="contact">
+
+    <h2 class="section-title">
+        Contact Us
+    </h2>
+
+
+    <div class="contact-container">
+
+        <p>
+            Have questions about your booking?
+        </p>
+
+        <p>
+            Email: support@cinebook.com
+        </p>
+
+        <p>
+            Phone: +91 98765 43210
+        </p>
+
+        <p>
+            Location: Coimbatore, Tamil Nadu
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- Footer -->
+
+<footer>
+
+    <p>
+        © 2026
+        <span>CineBook</span>
+        Movie Ticket Booking
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
